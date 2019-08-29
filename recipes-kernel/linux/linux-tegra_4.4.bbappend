@@ -1,11 +1,9 @@
 FILESEXTRAPATHS_prepend := "${THISDIR}/files/tegra186:"
-SRCBRANCH = "patches-${L4T_VERSION}-cti"
 
-SRCREV = "9d80356a382354f5639bfbb688ae25cd3a0b329b"
-
-KERNEL_REPO = "github.com/lfdmn/linux-tegra.git"
-SRC_URI = "git://${KERNEL_REPO};branch=${SRCBRANCH} \
+SRC_URI += " \
           file://tegra18_cti_defconfig \
+          file://0001-Import-CTI-BSP.patch \
+          file://0002-fix-compilation-errors-due-to-warnings.patch \
 "
 
 KERNEL_ROOTSPEC = "root=/dev/mmcblk\${devnum}p1 rw rootwait"

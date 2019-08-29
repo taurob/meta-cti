@@ -1,0 +1,58 @@
+From dad3e35932a2e726a5796c5cec92a8f1ef498878 Mon Sep 17 00:00:00 2001
+From: Etienne Cordonnier <etienne.cordonnier@taurob.com>
+Date: Thu, 29 Aug 2019 13:59:33 +0200
+Subject: [PATCH] fix compilation errors due to warnings
+
+Signed-off-by: Etienne Cordonnier <etienne.cordonnier@taurob.com>
+---
+ drivers/media/platform/tegra/camera/vi/channel.c | 4 ++--
+ net/wireless/scan.c                              | 4 +---
+ 2 files changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/media/platform/tegra/camera/vi/channel.c b/drivers/media/platform/tegra/camera/vi/channel.c
+index 46d4ff1d7458..d5d0ccc17a3a 100644
+--- a/drivers/media/platform/tegra/camera/vi/channel.c
++++ b/drivers/media/platform/tegra/camera/vi/channel.c
+@@ -355,7 +355,7 @@ void tegra_channel_ec_close(struct tegra_mc_vi *vi)
+ 
+ 	/* clear all channles sync point fifo context */
+ 	list_for_each_entry(chan, &vi->vi_chans, list) {
+-		memset(&chan->syncpoint_fifo[0], 0, TEGRA_CSI_BLOCKS);
++		memset(&chan->syncpoint_fifo[0], 0, sizeof(chan->syncpoint_fifo));
+ 	}
+ }
+ 
+@@ -1593,7 +1593,7 @@ static int tegra_channel_csi_init(struct tegra_channel *chan)
+ 	chan->gang_mode = CAMERA_NO_GANG_MODE;
+ 	chan->total_ports = 0;
+ 	memset(&chan->port[0], INVALID_CSI_PORT, TEGRA_CSI_BLOCKS);
+-	memset(&chan->syncpoint_fifo[0], 0, TEGRA_CSI_BLOCKS);
++	memset(&chan->syncpoint_fifo[0], 0, sizeof(chan->syncpoint_fifo));
+ 	if (chan->pg_mode) {
+ 		/* If VI has 4 existing channels, chan->id will start
+ 		 * from 4 for the first TPG channel, which uses PORT_A(0).
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index 911b54158fd5..b903566141d2 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -56,7 +56,7 @@
+  * also linked into the probe response struct.
+  */
+ 
+-#define IEEE80211_SCAN_RESULT_EXPIRE	(7 * HZ)
++#define IEEE80211_SCAN_RESULT_EXPIRE	(30 * HZ)
+ /*
+  * Limit the number of BSS entries stored in mac80211. Each one is
+  * a bit over 4k at most, so this limits to roughly 4-5M of memory.
+@@ -70,8 +70,6 @@ module_param(bss_entries_limit, int, 0644);
+ MODULE_PARM_DESC(bss_entries_limit,
+                  "limit to number of scan BSS entries (per wiphy, default 1000)");
+ 
+-#define IEEE80211_SCAN_RESULT_EXPIRE	(30 * HZ)
+-
+ static void bss_free(struct cfg80211_internal_bss *bss)
+ {
+ 	struct cfg80211_bss_ies *ies;
+-- 
+2.20.1
+
