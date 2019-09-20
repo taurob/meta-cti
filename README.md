@@ -2,12 +2,12 @@
 ## Overview
 Repository for ConnectTech BSP for Tegra carriers.
 
-This layer depends on [meta-tegra](https://github.com/madisongh/meta-tegra) layer and meta-boot2qt for the distro. 
+This layer depends on [meta-tegra](https://github.com/madisongh/meta-tegra) layer.
 
-I tested with meta-tegra rocko-l4t-r28.2 commit 4aea5e3785dc400e31981467f475b54e652dbd67 with Astro carrier. 
+Tested with meta-tegra thud-l4t-r32.1 commit 3300c2f6dca438f17cd2844f4100b5682d1f3b81 with Rudi carrier.
 
 ## Adding other machines for other carrier boards
-I recommand you to install NVIdia's jetpack, 3.2 for rocko-l4t-r28.2, and install ConnectTech BSP on top of it.
+I recommand you to install NVIdia's jetpack, 4.2 for thud-l4t-r32.1, and install ConnectTech BSP on top of it.
 
 Flash your device with Jetpack ubuntu distro and check the HW works well, then you are sure you have selected the correct configuration.
 
@@ -17,7 +17,7 @@ Create a new machine in conf/machine and take an existing one as template. In th
 * UBOOT_MACHINE
 
 Example:
-astro-revG+.conf has 
+astro-revG+.conf has
 * DTB_FILE=tegra186-tx2-cti-ASG001-revG+.dtb
 * ODMDATA=0x6090000
 * SYSBOOTFILE=p2771-0000/extlinux.conf;
@@ -34,7 +34,7 @@ Finally the distro requires conf file matching the machine name. In conf/distro/
 The distro is based on meta-boot2qt. On the meta-boot2qt directory create 2 symlinks per machine as:
 ```bash
 cd ./meta-boot2qt/recipes-qt/boot2qt-addons/boot2qt-appcontroller
-ln -n jetson-tx2 astro-tx2 
+ln -n jetson-tx2 astro-tx2
 cd ./meta-boot2qt-distro/recipes-qt/qt5/qtbase
 ln -s jetson-tx2 astro-tx2
 ```
